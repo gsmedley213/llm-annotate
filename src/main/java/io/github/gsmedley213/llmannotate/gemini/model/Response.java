@@ -8,6 +8,10 @@ public record Response(
         String modelVersion
 ) {
 
+    public String textContent() {
+        return candidates().getFirst().content().parts().getFirst().text();
+    }
+
     public record Candidate(
             Content content,
             String finishReason,
