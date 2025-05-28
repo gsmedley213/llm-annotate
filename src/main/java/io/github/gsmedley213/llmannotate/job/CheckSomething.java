@@ -1,6 +1,7 @@
 package io.github.gsmedley213.llmannotate.job;
 
 import io.github.gsmedley213.llmannotate.service.DebugService;
+import io.github.gsmedley213.llmannotate.service.DevelopService;
 import io.github.gsmedley213.llmannotate.service.impl.GeminiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,15 @@ public class CheckSomething implements CommandLineRunner {
     @Autowired
     GeminiService llmService;
 
+    @Autowired
+    DevelopService developService;
+
     @Override
     public void run(String... args) throws Exception {
+        developService.localRun(DevelopService.Book.LIVESTOCK_AND_ARMOUR, 1);
+    }
+
+    private void basicQuestionExample(String... args) {
         String question = "Create a list of the words or concepts in the following text that would be above a fifth " +
                 "grade reading level: ";
 
