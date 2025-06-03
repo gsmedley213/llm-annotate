@@ -1,4 +1,4 @@
-package io.github.gsmedley213.llmannotate.gemini.model;
+package io.github.gsmedley213.llmannotate.model.gemini;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

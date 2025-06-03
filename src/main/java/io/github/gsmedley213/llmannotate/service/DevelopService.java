@@ -1,10 +1,10 @@
 package io.github.gsmedley213.llmannotate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.gsmedley213.llmannotate.model.AnnotationJob;
-import io.github.gsmedley213.llmannotate.model.ElementNotes;
-import io.github.gsmedley213.llmannotate.model.Notable;
-import io.github.gsmedley213.llmannotate.model.Note;
+import io.github.gsmedley213.llmannotate.model.shared.AnnotationJob;
+import io.github.gsmedley213.llmannotate.model.shared.ElementNotes;
+import io.github.gsmedley213.llmannotate.model.shared.Notable;
+import io.github.gsmedley213.llmannotate.model.shared.Note;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
 package io.github.gsmedley213.llmannotate.service;
 
-import io.github.gsmedley213.llmannotate.model.Note;
+import io.github.gsmedley213.llmannotate.model.shared.Note;
 
 import java.util.List;
 

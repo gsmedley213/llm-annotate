@@ -25,7 +25,12 @@ public class CheckSomething implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        developService.localRun(DevelopService.Book.LIVESTOCK_AND_ARMOUR, 1);
+        int run = Arrays.stream(args)
+                .filter(arg -> arg.startsWith("run:"))
+                .findFirst()
+                .map(arg -> Integer.parseInt(arg.split(":")[1]))
+                .orElse(1);
+        developService.localRun(DevelopService.Book.LIVESTOCK_AND_ARMOUR, run);
     }
 
     private void basicQuestionExample(String... args) {

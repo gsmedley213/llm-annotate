@@ -2,10 +2,10 @@ package io.github.gsmedley213.llmannotate.service.impl;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.gsmedley213.llmannotate.gemini.model.GenerationConfig;
-import io.github.gsmedley213.llmannotate.gemini.model.RequestBody;
-import io.github.gsmedley213.llmannotate.gemini.model.Response;
-import io.github.gsmedley213.llmannotate.model.Note;
+import io.github.gsmedley213.llmannotate.model.gemini.GenerationConfig;
+import io.github.gsmedley213.llmannotate.model.gemini.RequestBody;
+import io.github.gsmedley213.llmannotate.model.gemini.Response;
+import io.github.gsmedley213.llmannotate.model.shared.Note;
 import io.github.gsmedley213.llmannotate.model.gemini.GeminiModel;
 import io.github.gsmedley213.llmannotate.service.DebugService;
 import io.github.gsmedley213.llmannotate.service.LlmService;
@@ -50,7 +50,7 @@ public class GeminiService implements LlmService {
     @Override
     @SneakyThrows
     public List<Note> generateNotes(String context, String text) {
-        String query = NoteQuery.CONTEXT_TEXT.generate.apply(context, text);
+        String query = NoteQuery.ADULT.generate.apply(context, text);
 
         Response response = sendQuery(RequestBody.withSchema(query, new GenerationConfig()));
 
@@ -92,7 +92,6 @@ public class GeminiService implements LlmService {
                         requestTimes.peek(),
                         Duration.between(Instant.now(), requestTimes.peek().plusSeconds(61)).toSeconds());
                 Thread.sleep(Duration.between(Instant.now(), requestTimes.peek().plusSeconds(61)));
-                log.info("Done sleeping.");
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -113,9 +112,12 @@ public class GeminiService implements LlmService {
     }
 
     enum NoteQuery {
-        CONTEXT_TEXT((context, text) -> String.format("This is an excerpt from %s For every word or concept in the following text that would be above a 5th " +
+        FIFTH_GRADE((context, text) -> String.format("This is an excerpt from %s For every word or concept in the following text that would be above a 5th " +
                 "grade reading level provide an explanation of the word or concepts meaning that should be " +
                 "understandable to a 5th grader: %s", context, text)),
+        ADULT((context, text) -> String.format("This is an excerpt from %s Assume a reader who is an adult but with " +
+                "limited knowledge of this historical period. For every word or concept that might be unknown to this " +
+                "audience provide an explanation. Here is the excerpt: %s", context, text)),
         JUST_TEXT((context, text) -> String.format("For every word or concept in the following text that would be above a 5th " +
                 "grade reading level provide an explanation of the word or concepts meaning that should be " +
                 "understandable to a 5th grader: %s", text));

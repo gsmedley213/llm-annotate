@@ -1,4 +1,4 @@
-package io.github.gsmedley213.llmannotate.model;
+package io.github.gsmedley213.llmannotate.model.shared;
 
 import java.util.List;
 
