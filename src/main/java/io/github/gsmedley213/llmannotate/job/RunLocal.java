@@ -5,14 +5,16 @@ import io.github.gsmedley213.llmannotate.service.DevelopService;
 import io.github.gsmedley213.llmannotate.service.impl.GeminiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Slf4j
 @Component
-public class CheckSomething implements CommandLineRunner {
+public class RunLocal implements CommandLineRunner {
 
     @Autowired
     DebugService debugService;
@@ -23,14 +25,23 @@ public class CheckSomething implements CommandLineRunner {
     @Autowired
     DevelopService developService;
 
+    @Value("${directory:}")
+    private String directory;
+
+    @Value("${run:-1}")
+    private int run;
+
     @Override
     public void run(String... args) throws Exception {
-        int run = Arrays.stream(args)
-                .filter(arg -> arg.startsWith("run:"))
-                .findFirst()
-                .map(arg -> Integer.parseInt(arg.split(":")[1]))
-                .orElse(1);
-        developService.localRun(DevelopService.Book.LIVESTOCK_AND_ARMOUR, run);
+        if (directory == null || directory.isBlank()) {
+            throw new IllegalArgumentException("Missing required argument: --directory");
+        }
+
+        if (run == -1) {
+            throw new IllegalArgumentException("Missing required argument: --run");
+        }
+
+        developService.localRun(directory, run);
     }
 
     private void basicQuestionExample(String... args) {
