@@ -59,9 +59,10 @@ This repository is one stage of a multi-step process for creating annotated vers
 ## Running
 
 ```sh
-./gradlew bootRun --args="--directory=livestock_and_armour --run=1"
+./gradlew bootRun --args="--runLocal --directory=livestock_and_armour --run=1"
 ```
 
+- `--runLocal`: Run in local development mode.
 - `--directory`: Subdirectory for the book.
 - `--run`: Run number for the run we are continuing.
 

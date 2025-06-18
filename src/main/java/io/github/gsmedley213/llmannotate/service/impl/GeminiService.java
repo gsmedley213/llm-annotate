@@ -11,7 +11,6 @@ import io.github.gsmedley213.llmannotate.service.DebugService;
 import io.github.gsmedley213.llmannotate.service.LlmService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -26,19 +25,26 @@ import java.util.function.BiFunction;
 public class GeminiService implements LlmService {
 
     @Value("#{environment.GEMINI_TOKEN}")
-    private String geminiToken;
+    private final String geminiToken;
 
-    @Autowired
-    private DebugService debugService;
+    private final DebugService debugService;
 
-    @Autowired
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
-    private final GeminiModel model = GeminiModel.FLASH_2;
+    private final GeminiModel model;
 
-    private final RestClient client = RestClient.create();
+    private final RestClient client;
 
     Queue<Instant> requestTimes = new LinkedList<>();
+
+    public GeminiService(@Value("#{environment.GEMINI_TOKEN}") String geminiToken, DebugService debugService,
+                         ObjectMapper mapper, GeminiModel model, RestClient client) {
+        this.geminiToken = geminiToken;
+        this.debugService = debugService;
+        this.mapper = mapper;
+        this.model = model;
+        this.client = client;
+    }
 
     @Override
     public String ask(String question) {
